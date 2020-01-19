@@ -8,12 +8,13 @@ struct Hello {
 /**
  * This singleton class manages the core data activities
  */
-@available(OSX 10.12, *)
+@available(iOS 10.0, OSX 10.12, watchOS 3.0, tvOS 10.0, *)
 public class PersistanceManager {
     public var containerName: String
 
     public init(containerName: String) {
         self.containerName = containerName
+//        print("hi hi")
     }
 
     /// Get persistent containers view context
