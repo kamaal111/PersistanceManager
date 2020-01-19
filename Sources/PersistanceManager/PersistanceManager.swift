@@ -1,10 +1,6 @@
 
 import CoreData
 
-struct Hello {
-    var text = "Hello, World!"
-}
-
 /**
  * This singleton class manages the core data activities
  */
@@ -14,7 +10,7 @@ public class PersistanceManager {
 
     public init(containerName: String) {
         self.containerName = containerName
-//        print("hi hi")
+        print("initializing persistance manager")
     }
 
     /// Get persistent containers view context
@@ -36,6 +32,7 @@ public class PersistanceManager {
         if context.hasChanges {
             do {
                 try context.save()
+                print("saved context succesfully")
             } catch {
                 let nserror = error as NSError
                 print("Unresolved error \(nserror), \(nserror.userInfo)")
