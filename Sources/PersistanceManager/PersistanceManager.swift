@@ -2,30 +2,19 @@
 import CoreData
 
 /**
- * This singleton class manages the core data activities
+ * This class manages the core data activities
  */
 @available(iOS 10.0, OSX 10.12, watchOS 3.0, tvOS 10.0, *)
 public class PersistanceManager {
-    public var containerName: String
+    public var container: NSPersistentContainer
 
-    public init(containerName: String) {
-        self.containerName = containerName
-        print("initializing persistance manager")
+    public init(container: NSPersistentContainer) {
+        self.container = container
+        print("initializing persistance manager for \(container.name)")
     }
 
     /// Get persistent containers view context
-    public lazy var context = persistentContainer.viewContext
-
-    /// Persistent container
-    public lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: containerName)
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+    public lazy var context = container.viewContext
 
     /// Save core data entry
     public func save() {
