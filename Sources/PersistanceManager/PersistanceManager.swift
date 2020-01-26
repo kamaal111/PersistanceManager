@@ -10,7 +10,7 @@ public class PersistanceManager {
 
     public init(container: NSPersistentContainer) {
         self.container = container
-        print("initializing persistance manager for \(container.name)")
+        print("Initializing persistance manager for \(container.name)")
     }
 
     /// Get persistent containers view context

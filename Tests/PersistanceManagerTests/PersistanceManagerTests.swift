@@ -1,12 +1,15 @@
 import XCTest
+import CoreData
 @testable import PersistanceManager
 
+@available(iOS 10.0, *)
 final class PersistanceManagerTests: XCTestCase {
-    func testExample() {
+
+    func testPackage() {
         XCTAssertEqual(true, true)
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testPackage", testPackage),
     ]
 }
