@@ -10,6 +10,6 @@ final class PersistanceManagerTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testPackage", testPackage),
+        ("testPackage", testPackage)
     ]
 }
