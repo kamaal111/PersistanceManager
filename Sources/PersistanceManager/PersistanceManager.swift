@@ -24,8 +24,9 @@ public class PersistanceManager {
     /// Get persistent containers view context
     public lazy var context = container?.viewContext
 
-    /// - ToDo: Update documentation
     /// Save core data entry
+    /// - Throws: `SaveContextErrors.contextSave(errorObject: NSError)`
+    ///             if the object could not get saved
     public func save() throws {
         guard let context = context else { throw SaveContextErrors.contextIsUnavailable }
         if context.hasChanges {
@@ -38,13 +39,12 @@ public class PersistanceManager {
         }
     }
 
-    /// - ToDo: Update documentation
-    /**
-     * Fetches from persistent container and returns a array of managed objects
-     * - Parameters:
-     *      - objectType: The objects type to determine what the type of the managed objects are
-     * - Returns: An array of managed objects
-     */
+    /// Fetches from persistent container and returns a array of managed objects
+    /// - Parameters:
+    ///     - objectType: The objects type to determine what the type of the managed objects are
+    /// - Throws: `FetchContextErrors.contextFetch`
+    ///             if the array of objects could not get fetched from the context container
+    /// - Returns: An array of `managed objects`
     public func fetch<T: NSManagedObject>(_ objectType: T.Type) throws -> [T]? {
         let entityName = String(describing: objectType)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -56,12 +56,12 @@ public class PersistanceManager {
         }
     }
 
-    /// - ToDo: Update documentation
-    /**
-     * Delete managed object
-     * - Parameters:
-     *      - object: The managed object
-     */
+    /// Delete managed object
+    /// - Parameters:
+    ///     - object: The managed object
+    /// - Throws: `SaveContextErrors.couldNotSaveContext`
+    ///             if the object could not get saved after deletion
+    /// - Returns: void
     public func delete(_ object: NSManagedObject) throws {
         context?.delete(object)
         do {
@@ -73,14 +73,14 @@ public class PersistanceManager {
 }
 #endif
 
-/// - ToDo: Add documentation
+/// An enum of posible context save errors
 public enum SaveContextErrors: Error {
     case contextSave(errorObject: NSError)
     case contextIsUnavailable
     case couldNotSaveContext
 }
 
-/// - ToDo: Add documentation
+/// An enum of posible context fetch errors
 public enum FetchContextErrors: Error {
     case contextFetch
 }
