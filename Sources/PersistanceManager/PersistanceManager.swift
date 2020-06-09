@@ -28,7 +28,7 @@ public class PersistanceManager {
     /// - Throws: `SaveContextErrors.contextSave(errorObject: NSError)`
     ///             if the object could not get saved
     public func save() throws {
-        guard let context = context else { throw SaveContextErrors.contextIsUnavailable }
+        guard let context = self.context else { throw SaveContextErrors.contextIsUnavailable }
         if context.hasChanges {
             do {
                 try context.save()
@@ -46,10 +46,11 @@ public class PersistanceManager {
     ///             if the array of objects could not get fetched from the context container
     /// - Returns: An array of `managed objects`
     public func fetch<T: NSManagedObject>(_ objectType: T.Type) throws -> [T]? {
+        guard let context = self.context else { return nil }
         let entityName = String(describing: objectType)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         do {
-            let fecthedObjects = try context?.fetch(fetchRequest) as? [T]
+            let fecthedObjects = try context.fetch(fetchRequest) as? [T]
             return fecthedObjects
         } catch {
             throw FetchContextErrors.contextFetch
