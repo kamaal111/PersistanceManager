@@ -4,6 +4,7 @@ A library to help you with Core Data management
 
 | branch  | status                                                                                       |
 | ------- | -------------------------------------------------------------------------------------------- |
+| master  | ![CI](https://github.com/kamaal111/PersistanceManager/workflows/CI/badge.svg?branch=master)  |
 | develop | ![CI](https://github.com/kamaal111/PersistanceManager/workflows/CI/badge.svg?branch=develop) |
 
 ## Installation
