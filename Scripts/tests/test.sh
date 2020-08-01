@@ -1,8 +1,7 @@
 #!/bin/sh
 
-
-project="PersistanceManager.xcodeproj"
-scheme="PersistanceManager-Package"
+workspace=".swiftpm/xcode/package.xcworkspace"
+scheme="PersistanceManager"
 
 destinations=(
   "platform=macOS"
@@ -10,7 +9,7 @@ destinations=(
 )
 
 xcode_test() {
-  set -o pipefail && xcodebuild test -project "$project" -scheme "$1" -destination "$2" | xcpretty || exit 1
+  set -o pipefail && xcodebuild test -workspace "$workspace" -scheme "$1" -destination "$2" | xcpretty || exit 1
 }
 
 test_all_destinations() {
