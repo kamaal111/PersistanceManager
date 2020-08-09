@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - "release/**"
+jobs:
+  buildAndTest:
+    name: build and test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build and Test
+        run: |
+          sh Scripts/tests/run.sh
