@@ -3,22 +3,15 @@ import CoreData
 /**
  * This class manages the core data activities
  */
-#if os(iOS)
 @available(watchOS, unavailable)
 @available(tvOS, unavailable)
 @available(iOS 13.0, OSX 10.15, *)
 public class PersistanceManager {
     public var container: NSPersistentContainer?
-    public var cloudContainer: NSPersistentCloudKitContainer?
 
     /// Initialize local persistent container
     public init(container: NSPersistentContainer) {
         self.container = container
-    }
-
-    /// Initialize cloud persistent container
-    public init(cloudContainer: NSPersistentCloudKitContainer) {
-        self.cloudContainer = cloudContainer
     }
 
     /// Get persistent containers view context
@@ -72,7 +65,6 @@ public class PersistanceManager {
         }
     }
 }
-#endif
 
 /// An enum of posible context save errors
 public enum SaveContextErrors: Error {
