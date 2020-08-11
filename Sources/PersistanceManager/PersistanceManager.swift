@@ -14,6 +14,10 @@ public class PersistanceManager {
         self.container = container
     }
 
+    public func setupNewContainer(container: NSPersistentContainer) {
+        self.container = container
+    }
+
     /// Get persistent containers view context
     public lazy var context = container?.viewContext
 
