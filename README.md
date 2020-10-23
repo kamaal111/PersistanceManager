@@ -2,13 +2,6 @@
 
 A library to help you with Core Data management
 
-| branch  | status                                                                                             |
-| ------- | -------------------------------------------------------------------------------------------------- |
-| master  | ![CI](https://github.com/kamaal111/PersistanceManager/workflows/CI/badge.svg?branch=master)        |
-| develop | ![CI](https://github.com/kamaal111/PersistanceManager/workflows/CI/badge.svg?branch=develop)       |
-| v1.1.0  | ![CI](https://github.com/kamaal111/PersistanceManager/workflows/CI/badge.svg?branch=release/1.1.0) |
-| v1.0.3  | ![CI](https://github.com/kamaal111/PersistanceManager/workflows/CI/badge.svg?branch=release/1.0.3) |
-
 ## Installation
 
 ### Swift Package Manager
