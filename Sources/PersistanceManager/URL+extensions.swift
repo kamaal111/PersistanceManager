@@ -13,7 +13,7 @@ public extension URL {
     ///   - appGroup: App group identifier
     ///   - databaseName: A self given name to access the container
     /// - Returns: URL of the given app group identifier
-    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+    static func appGroupStoreURL(for appGroup: String, databaseName: String) -> URL {
         guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
             fatalError("Shared file container could not be created.")
         }
