@@ -3,9 +3,7 @@ import CoreData
 /**
  * This class manages the core data activities
  */
-@available(watchOS, unavailable)
-@available(tvOS, unavailable)
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 10.0, OSX 10.12, *)
 public class PersistanceManager {
     public var container: NSPersistentContainer?
 
@@ -14,6 +12,9 @@ public class PersistanceManager {
         self.container = container
     }
 
+    
+    /// Replace current persistent container with another persistent container
+    /// - Parameter container: The container that will be used
     public func setupNewContainer(container: NSPersistentContainer) {
         self.container = container
     }
@@ -59,7 +60,6 @@ public class PersistanceManager {
     ///     - object: The managed object
     /// - Throws: `SaveContextErrors.couldNotSaveContext`
     ///             if the object could not get saved after deletion
-    /// - Returns: void
     public func delete(_ object: NSManagedObject) throws {
         context?.delete(object)
         do {
