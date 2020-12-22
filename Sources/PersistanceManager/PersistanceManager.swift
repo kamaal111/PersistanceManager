@@ -1,9 +1,18 @@
+//
+//  PersistanceManager.swift
+//
+//
+//  Created by Kamaal Farah on 19/01/2020.
+//
+
 import CoreData
+
+// - MARK: Initializer and variables
 
 /**
  * This class manages the core data activities
  */
-@available(iOS 10.0, OSX 10.12, *)
+@available(iOS 10.0, macOS 10.12, *)
 public class PersistanceManager {
     public var container: NSPersistentContainer?
 
@@ -12,72 +21,77 @@ public class PersistanceManager {
         self.container = container
     }
 
-    
+    /// Get persistent containers view context
+    public lazy var context = container?.viewContext
+}
+
+// - MARK: API
+
+public extension PersistanceManager {
     /// Replace current persistent container with another persistent container
     /// - Parameter container: The container that will be used
-    public func setupNewContainer(container: NSPersistentContainer) {
+    func setupNewContainer(container: NSPersistentContainer) {
         self.container = container
     }
 
-    /// Get persistent containers view context
-    public lazy var context = container?.viewContext
-
     /// Save core data entry
-    /// - Throws: `SaveContextErrors.contextSave(errorObject: NSError)`
+    /// - Throws: `PersistanceManager.PersistanceManagerErrors.contextIsUnavailable`
     ///             if the object could not get saved
-    public func save() throws {
-        guard let context = self.context else { throw SaveContextErrors.contextIsUnavailable }
+    func save() throws {
+        guard let context = self.context else {
+            throw PersistanceManager.PersistanceManagerErrors.contextIsUnavailable
+        }
         if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                throw SaveContextErrors.contextSave(errorObject: nserror)
-            }
+            try context.save()
         }
     }
 
     /// Fetches from persistent container and returns a array of managed objects
     /// - Parameters:
     ///     - objectType: The objects type to determine what the type of the managed objects are
-    /// - Throws: `FetchContextErrors.contextFetch`
-    ///             if the array of objects could not get fetched from the context container
-    /// - Returns: An array of `managed objects`
-    public func fetch<T: NSManagedObject>(_ objectType: T.Type) throws -> [T]? {
-        guard let context = self.context else { return nil }
+    /// - Returns: An result of an array of `managed objects` or an error
+    func fetch<T: NSManagedObject>(_ objectType: T.Type) -> Result<[T]?, Error> {
+        guard let context = self.context else {
+            return .failure(PersistanceManager.PersistanceManagerErrors.contextIsUnavailable)
+        }
         let entityName = String(describing: objectType)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         do {
             let fecthedObjects = try context.fetch(fetchRequest) as? [T]
-            return fecthedObjects
+            return .success(fecthedObjects)
         } catch {
-            throw FetchContextErrors.contextFetch
+            return .failure(error)
         }
     }
 
     /// Delete managed object
     /// - Parameters:
     ///     - object: The managed object
-    /// - Throws: `SaveContextErrors.couldNotSaveContext`
+    /// - Throws: `Error`
     ///             if the object could not get saved after deletion
-    public func delete(_ object: NSManagedObject) throws {
-        context?.delete(object)
-        do {
-            try save()
-        } catch {
-            throw SaveContextErrors.couldNotSaveContext
+    func delete(_ object: NSManagedObject) throws {
+        guard let context = self.context else {
+            throw PersistanceManager.PersistanceManagerErrors.contextIsUnavailable
         }
+        context.delete(object)
+        try save()
     }
 }
 
-/// An enum of posible context save errors
-public enum SaveContextErrors: Error {
-    case contextSave(errorObject: NSError)
-    case contextIsUnavailable
-    case couldNotSaveContext
+// - MARK: Errors
+
+public extension PersistanceManager {
+    /// An enum of posible errors
+    enum PersistanceManagerErrors: Error {
+        case contextIsUnavailable
+    }
 }
 
-/// An enum of posible context fetch errors
-public enum FetchContextErrors: Error {
-    case contextFetch
+public extension PersistanceManager.PersistanceManagerErrors {
+    var errorDescription: String? {
+        switch self {
+        case .contextIsUnavailable:
+            return "Context could not be found"
+        }
+    }
 }
