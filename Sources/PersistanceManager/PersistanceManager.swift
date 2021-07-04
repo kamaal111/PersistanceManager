@@ -10,7 +10,7 @@ import CoreData
 // - MARK: Initializer and variables
 
 /**
- * This class manages the core data activities
+ * An class with CoreData helper functions
  */
 @available(iOS 10.0, macOS 10.12, *)
 public class PersistanceManager {
@@ -50,6 +50,15 @@ public extension PersistanceManager {
     /// - Parameters:
     ///     - objectType: The objects type to determine what the type of the managed objects are
     /// - Returns: An result of an array of `managed objects` or an error
+    ///
+    /// For example:
+    ///  ```swift
+    ///  let result = fetch(OwnManagedObject.self)
+    ///  switch result {
+    ///  case .failure(let error): // handle error
+    ///  case .success(let objects): // handle objects
+    ///  }
+    ///  ```
     func fetch<T: NSManagedObject>(_ objectType: T.Type) -> Result<[T]?, Error> {
         guard let context = self.context else {
             return .failure(PersistanceManager.PersistanceManagerErrors.contextIsUnavailable)
@@ -67,8 +76,7 @@ public extension PersistanceManager {
     /// Delete managed object
     /// - Parameters:
     ///     - object: The managed object
-    /// - Throws: `Error`
-    ///             if the object could not get saved after deletion
+    /// - Throws: an `Error` if the object could not get saved after deletion
     func delete(_ object: NSManagedObject) throws {
         guard let context = self.context else {
             throw PersistanceManager.PersistanceManagerErrors.contextIsUnavailable

@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build and Test
         run: |
-          sh Scripts/tests/run.sh
+          sh Scripts/run_tests.sh
