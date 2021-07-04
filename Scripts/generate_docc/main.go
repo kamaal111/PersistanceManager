@@ -1,26 +1,32 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
 )
 
 func main() {
+	SCHEME := os.Getenv("SCHEME")
+	if SCHEME == "" {
+		log.Fatalln("No scheme provided")
+	}
+
 	xcodebuild := "/Applications/Xcode-beta.app/Contents/Developer/usr/bin/xcodebuild"
-	buildDocumentationCommand := exec.Command(xcodebuild, "docbuild", "-scheme", "PersistanceManager", "-derivedDataPath", "DerivedData")
+	buildDocumentationCommand := exec.Command(xcodebuild, "docbuild", "-scheme", SCHEME, "-derivedDataPath", "DerivedData")
 	_, err := buildDocumentationCommand.Output()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	doccArchivePath := "DerivedData/Build/Products/Debug/PersistanceManager.doccarchive"
+	doccArchivePath := fmt.Sprintf("DerivedData/Build/Products/Debug/%s.doccarchive", SCHEME)
 	_, err = os.Stat(doccArchivePath)
 	if os.IsNotExist(err) {
 		log.Fatalln(err)
 	}
 
-	err = copy(doccArchivePath, "PersistanceManager.doccarchive")
+	err = copy(doccArchivePath, fmt.Sprintf("%s.doccarchive", SCHEME))
 	if os.IsNotExist(err) {
 		log.Fatalln(err)
 	}
