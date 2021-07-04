@@ -7,5 +7,5 @@ time {
     rm -rf docs
     set -o pipefail && SCHEME="$SCHEME" XCODE_PATH="$XCODE_PATH" go run Scripts/generate_docc/main.go || exit 1
     cd docc2html
-    swift run docc2html "../$SCHEME.doccarchive" ../docs
+    set -o pipefail && swift run docc2html "../$SCHEME.doccarchive" ../docs || exit 1
 }
